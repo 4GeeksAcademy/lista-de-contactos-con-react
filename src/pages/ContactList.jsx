@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export const ContactList = () => {
     const [contactos, setContactos] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { store } = useGlobalReducer();
 
     // Cargar contactos al montar el componente
     useEffect(() => {
@@ -12,8 +14,19 @@ export const ContactList = () => {
 
     const cargarContactos = async () => {
         setLoading(true);
-        const contactosData = await obtenerContactos();
-        setContactos(contactosData);
+        // Obtener contactos de la API
+        let contactosData = [];
+        if (typeof obtenerContactos === "function") {
+            contactosData = await obtenerContactos();
+        }
+        // Unir con los contactos del estado global (sin duplicar por id)
+        const contactosGlobal = store.contacts || [];
+        const idsApi = new Set(contactosData.map(c => c.id));
+        const contactosCombinados = [
+            ...contactosData,
+            ...contactosGlobal.filter(c => !idsApi.has(c.id))
+        ];
+        setContactos(contactosCombinados);
         setLoading(false);
     };
 
@@ -61,7 +74,7 @@ export const ContactList = () => {
                                     </p>
                                     <div className="btn-group" role="group">
                                         <Link 
-                                            to={`/edit-contact/${contacto.id}`} 
+                                            to={`/edit/${contacto.id}`} 
                                             className="btn btn-warning btn-sm"
                                         >
                                             Editar

@@ -1,3 +1,5 @@
+import { DeleteContact } from "./pages/DeleteContact.jsx";
+  <Route path="/delete/:id" element={<DeleteContact />} />
 // Import necessary components and functions from react-router-dom.
 
 import {
@@ -11,7 +13,8 @@ import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
 import {NewContact} from "./pages/NewContact"
 import { ContactList } from "./pages/ContactList"; 
-import { EditContact } from "./pages/EditContact";
+import { EditContact } from "./pages/EditContactList";
+
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -29,9 +32,10 @@ export const router = createBrowserRouter(
          <Route path= "/new" element={<NewContact />} />
         <Route path= "/new-contact" element={<NewContact />} />
         <Route path= "/contact-list" element={<ContactList />} />
-         <Route path= "/edit/:id" element={<EditContact />} />
-        <Route path="/single/:theId" element={ <Single />} />  {/* Dynamic route for single items */}
-        <Route path="/demo" element={<Demo />} />
+  <Route path= "/edit/:id" element={<EditContact />} />
+  <Route path="/single/:theId" element={ <Single />} />  {/* Dynamic route for single items */}
+  <Route path="/delete/:id" element={<DeleteContact />} />
+  <Route path="/demo" element={<Demo />} />
       </Route>
     )
 );

@@ -32,6 +32,8 @@ export const NewContact = () => {
             if (resp.ok) {
                 const newContact = await resp.json();
                 console.log("Contacto creado:", newContact);
+                // Guardar en el estado global
+                dispatch({ type: "ADD_CONTACT", payload: newContact });
                 // Limpiar formulario
                 setNombre("");
                 setCorreo("");
